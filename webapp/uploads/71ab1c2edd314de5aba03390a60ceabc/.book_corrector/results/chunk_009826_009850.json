@@ -1,0 +1,14 @@
+{
+  "chunk": 394,
+  "start": 9826,
+  "end": 9850,
+  "elapsed_seconds": 4.344,
+  "corrections": [
+    {
+      "id": 9831,
+      "original": "Её рука легка на его волосы.",
+      "corrected": "Её рука легла на его волосы."
+    }
+  ],
+  "suspicious": []
+}

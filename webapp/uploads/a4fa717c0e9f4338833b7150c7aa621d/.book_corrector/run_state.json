@@ -1,0 +1,10 @@
+{
+  "status": "running",
+  "chunks_total": 12,
+  "chunks_done": 2,
+  "started_at": 1788020903.818453,
+  "last_chunk_start": 26,
+  "last_chunk_end": 50,
+  "avg_seconds": 1.338,
+  "eta_seconds": 13.4
+}

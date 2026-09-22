@@ -1,0 +1,655 @@
+
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book Corrector</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f5f6f8;
+  --surface: rgba(255,255,255,.92);
+  --surface-solid: #ffffff;
+  --text: #17181c;
+  --muted: #6d717b;
+  --border: #e2e4e8;
+  --border-strong: #cfd3da;
+  --accent: #1f2937;
+  --accent-hover: #111827;
+  --drop-bg: #fafbfc;
+  --drop-hover: #f2f4f7;
+  --progress-bg: #e7e9ed;
+  --danger: #b42318;
+  --success: #16794c;
+  --shadow: 0 20px 55px rgba(20,24,32,.10);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101216;
+  --surface: rgba(24,27,33,.94);
+  --surface-solid: #181b21;
+  --text: #f3f4f6;
+  --muted: #9ca3af;
+  --border: #30343c;
+  --border-strong: #454a55;
+  --accent: #f3f4f6;
+  --accent-hover: #ffffff;
+  --drop-bg: #15181e;
+  --drop-hover: #1b1f26;
+  --progress-bg: #30343c;
+  --danger: #ff8a80;
+  --success: #5bd39a;
+  --shadow: 0 22px 60px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 50% -15%, rgba(127,127,127,.10), transparent 42%),
+    var(--bg);
+  transition: background .2s ease, color .2s ease;
+}
+
+.app {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 42px 0 56px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.logo {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-solid);
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+}
+
+.brand-title {
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: -.02em;
+}
+
+.brand-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-solid);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  transition: border-color .15s, background .15s, transform .1s;
+}
+
+.theme-toggle:hover { border-color: var(--border-strong); }
+.theme-toggle:active { transform: translateY(1px); }
+
+.theme-icon { font-size: 16px; line-height: 1; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 34px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+.hero {
+  margin-bottom: 28px;
+}
+
+h1 {
+  margin: 0 0 9px;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.1;
+  letter-spacing: -.04em;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 18px;
+  align-items: end;
+}
+
+.field-label {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.drop {
+  position: relative;
+  min-height: 178px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: 14px;
+  background: var(--drop-bg);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+
+.drop:hover,
+.drop.drag {
+  border-color: var(--text);
+  background: var(--drop-hover);
+}
+
+.drop.drag { transform: scale(1.008); }
+
+.drop-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  font-size: 22px;
+}
+
+.drop-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.drop-help {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.file-name {
+  max-width: 100%;
+  margin-top: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: none;
+}
+
+input[type=file] { display: none; }
+
+.model-field {
+  min-width: 0;
+}
+
+select {
+  width: 100%;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+select:focus {
+  border-color: var(--text);
+  box-shadow: 0 0 0 3px rgba(127,127,127,.12);
+}
+
+.start {
+  width: 100%;
+  height: 48px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--accent);
+  color: var(--surface-solid);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: opacity .15s, transform .1s;
+}
+
+.start:hover:not(:disabled) { opacity: .88; }
+.start:active:not(:disabled) { transform: translateY(1px); }
+.start:disabled { opacity: .42; cursor: not-allowed; }
+
+.progress-card {
+  display: none;
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--drop-bg);
+}
+
+.progress-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.progress-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.progress-value {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.progress {
+  height: 9px;
+  background: var(--progress-bg);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width .4s ease;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 11px;
+}
+
+.status {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.eta {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.download {
+  display: none;
+  margin-top: 14px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface-solid);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  transition: background .15s;
+}
+
+.download:hover { background: var(--drop-hover); }
+.actions .download, .actions .cancel { flex: 1; }
+
+.error {
+  color: var(--danger);
+}
+
+.footer {
+  margin-top: 15px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+@media (max-width: 720px) {
+  .app { width: min(100% - 20px, 620px); padding-top: 18px; }
+  .card { padding: 22px; border-radius: 16px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .topbar { margin-bottom: 15px; }
+  .brand-subtitle { display: none; }
+}
+
+@media (max-width: 430px) {
+  .card { padding: 17px; }
+  .theme-toggle .theme-label { display: none; }
+  .drop { min-height: 160px; }
+  .actions { flex-direction: column; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">Aa</div>
+      <div>
+        <div class="brand-title">Book Corrector</div>
+      </div>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Сменить тему">
+      <span class="theme-icon" id="themeIcon">☀</span>
+      <span class="theme-label" id="themeLabel">Светлая</span>
+    </button>
+  </header>
+
+  <main class="card">
+    <section class="hero">
+      <h1>Проверка книги</h1>
+    </section>
+
+    <section class="form-grid">
+      <div>
+        <label class="field-label">Файл книги</label>
+        <label class="drop" id="drop" for="file">
+          <div class="drop-icon">↑</div>
+          <div class="drop-title">Перетащите DOCX сюда</div>
+          <div class="drop-help">или нажмите, чтобы выбрать файл</div>
+          <div class="file-name" id="fileName"></div>
+          <input id="file" type="file" accept=".docx">
+        </label>
+      </div>
+
+      <div class="model-field">
+        <label class="field-label" for="model">Модель Ollama</label>
+        <select id="model"></select>
+        <button class="start" id="start" disabled>Начать проверку</button>
+      </div>
+    </section>
+
+    <section class="progress-card" id="progressWrap">
+      <div class="progress-head">
+        <div class="progress-title">Проверка документа</div>
+        <div class="progress-value" id="progressText">0 / 0</div>
+      </div>
+      <div class="progress">
+        <div class="bar" id="bar"></div>
+      </div>
+      <div class="status-row">
+        <div class="status" id="status">Подготовка...</div>
+        <div class="eta" id="eta"></div>
+      </div>
+      <div class="actions">
+        <button class="cancel" id="cancel" type="button">Отменить проверку</button>
+        <a class="download" id="download">Скачать отчёт DOCX</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">Работает локально · исходный файл не изменяется</div>
+</div>
+
+<script>
+const html = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const themeLabel = document.getElementById('themeLabel');
+
+function applyTheme(theme) {
+  html.dataset.theme = theme;
+  localStorage.setItem('bookCorrectorTheme', theme);
+  const dark = theme === 'dark';
+  themeIcon.textContent = dark ? '☾' : '☀';
+  themeLabel.textContent = dark ? 'Тёмная' : 'Светлая';
+  themeToggle.setAttribute('aria-label', dark ? 'Включить светлую тему' : 'Включить тёмную тему');
+}
+
+const savedTheme = localStorage.getItem('bookCorrectorTheme') || 'light';
+applyTheme(savedTheme);
+
+themeToggle.addEventListener('click', () => {
+  applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+
+const fileInput = document.getElementById('file');
+const drop = document.getElementById('drop');
+const fileName = document.getElementById('fileName');
+const model = document.getElementById('model');
+const start = document.getElementById('start');
+const wrap = document.getElementById('progressWrap');
+const bar = document.getElementById('bar');
+const progressText = document.getElementById('progressText');
+const eta = document.getElementById('eta');
+const status = document.getElementById('status');
+const download = document.getElementById('download');
+const cancel = document.getElementById('cancel');
+
+let selectedFile = null;
+let jobId = null;
+
+async function loadModels() {
+  try {
+    const r = await fetch('/api/models');
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail || 'Не удалось получить список моделей');
+
+    model.innerHTML = '';
+    data.models.forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      model.appendChild(opt);
+    });
+
+    updateStart();
+  } catch (e) {
+    status.textContent = e.message;
+    status.className = 'status error';
+    wrap.style.display = 'block';
+  }
+}
+
+function setFile(f) {
+  if (!f) return;
+  if (!f.name.toLowerCase().endsWith('.docx')) {
+    status.textContent = 'Поддерживается только файл .docx';
+    status.className = 'status error';
+    wrap.style.display = 'block';
+    return;
+  }
+
+  selectedFile = f;
+  fileName.textContent = f.name;
+  fileName.style.display = 'block';
+  status.textContent = '';
+  status.className = 'status';
+  updateStart();
+}
+
+function updateStart() {
+  start.disabled = !(selectedFile && model.value);
+}
+
+fileInput.addEventListener('change', e => setFile(e.target.files[0]));
+
+drop.addEventListener('dragover', e => {
+  e.preventDefault();
+  drop.classList.add('drag');
+});
+
+drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+
+drop.addEventListener('drop', e => {
+  e.preventDefault();
+  drop.classList.remove('drag');
+  setFile(e.dataTransfer.files[0]);
+});
+
+start.addEventListener('click', async () => {
+  start.disabled = true;
+  wrap.style.display = 'block';
+  download.style.display = 'none';
+  bar.style.width = '0%';
+  status.className = 'status';
+  status.textContent = 'Загрузка файла...';
+  eta.textContent = '';
+
+  const fd = new FormData();
+  fd.append('file', selectedFile);
+  fd.append('model', model.value);
+
+  try {
+    const r = await fetch('/api/jobs', { method: 'POST', body: fd });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail || 'Ошибка запуска');
+    jobId = data.job_id;
+    cancel.style.display = 'block';
+    poll();
+  } catch (e) {
+    status.textContent = e.message;
+    status.className = 'status error';
+    start.disabled = false;
+  }
+});
+
+
+cancel.addEventListener('click', async () => {
+  if (!jobId) return;
+  cancel.disabled = true;
+  status.textContent = 'Отмена проверки...';
+
+  try {
+    const r = await fetch('/api/jobs/' + jobId + '/cancel', {method: 'POST'});
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail || 'Не удалось отменить');
+    poll();
+  } catch (e) {
+    status.textContent = e.message;
+    status.className = 'status error';
+    cancel.disabled = false;
+  }
+});
+
+async function poll() {
+  try {
+    const r = await fetch('/api/jobs/' + jobId);
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail || 'Ошибка получения статуса');
+
+    const done = data.progress || 0;
+    const total = data.total || 0;
+    const pct = total ? Math.min(100, done / total * 100) : 0;
+
+    bar.style.width = pct + '%';
+    progressText.textContent = `${done} / ${total}`;
+    eta.textContent = data.eta_seconds != null
+      ? 'Осталось: ' + formatSeconds(data.eta_seconds)
+      : '';
+
+    status.textContent = data.message || data.status;
+
+    if (data.status === 'cancelling') {
+      cancel.disabled = true;
+      status.textContent = 'Останавливаем текущую генерацию...';
+      setTimeout(poll, 500);
+      return;
+    }
+
+    if (data.status === 'cancelled') {
+      cancel.style.display = 'none';
+      cancel.disabled = false;
+      status.textContent = 'Проверка отменена. Готовый отчёт не создан.';
+      start.disabled = false;
+      return;
+    }
+
+    if (data.status === 'completed') {
+      bar.style.width = '100%';
+      progressText.textContent = `${total} / ${total}`;
+      eta.textContent = 'Готово';
+      download.href = '/api/jobs/' + jobId + '/download';
+      download.style.display = 'flex';
+      status.textContent = 'Проверка завершена. Отчёт готов.';
+      return;
+    }
+
+    if (data.status === 'error') {
+      cancel.style.display = 'none';
+      cancel.disabled = false;
+      status.textContent = data.message || 'Произошла ошибка';
+      status.className = 'status error';
+      start.disabled = false;
+      return;
+    }
+
+    setTimeout(poll, 1000);
+  } catch (e) {
+    status.textContent = e.message;
+    status.className = 'status error';
+    start.disabled = false;
+  }
+}
+
+function formatSeconds(s) {
+  s = Math.max(0, Math.round(s));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h) return `${h}ч ${m}м`;
+  if (m) return `${m}м ${sec}с`;
+  return `${sec}с`;
+}
+
+loadModels();
+</script>
+</body>
+</html>

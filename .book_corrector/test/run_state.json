@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "chunks_total": 12,
+  "chunks_done": 12,
+  "started_at": 1788020406.3990095,
+  "total_seconds": 0,
+  "corrections": 13,
+  "suspicious": 0,
+  "report": "orthography_report.docx"
+}

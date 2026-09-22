@@ -1,0 +1,14 @@
+{
+  "chunk": 92,
+  "start": 2276,
+  "end": 2300,
+  "elapsed_seconds": 3.802,
+  "corrections": [
+    {
+      "id": 2286,
+      "original": "Я отрыл глаза и обернулся.",
+      "corrected": "Я открыл глаза и обернулся."
+    }
+  ],
+  "suspicious": []
+}

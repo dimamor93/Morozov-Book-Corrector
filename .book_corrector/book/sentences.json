@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "text": "Первое.",
+    "paragraph_id": 0,
+    "paragraph_order": 0
+  },
+  {
+    "id": 2,
+    "text": "Второе.",
+    "paragraph_id": 0,
+    "paragraph_order": 1
+  }
+]

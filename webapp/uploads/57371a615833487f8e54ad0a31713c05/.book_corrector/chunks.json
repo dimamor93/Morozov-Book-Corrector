@@ -1,0 +1,74 @@
+[
+  {
+    "chunk": 1,
+    "start": 1,
+    "end": 25,
+    "sentences": 25
+  },
+  {
+    "chunk": 2,
+    "start": 26,
+    "end": 50,
+    "sentences": 25
+  },
+  {
+    "chunk": 3,
+    "start": 51,
+    "end": 75,
+    "sentences": 25
+  },
+  {
+    "chunk": 4,
+    "start": 76,
+    "end": 100,
+    "sentences": 25
+  },
+  {
+    "chunk": 5,
+    "start": 101,
+    "end": 125,
+    "sentences": 25
+  },
+  {
+    "chunk": 6,
+    "start": 126,
+    "end": 150,
+    "sentences": 25
+  },
+  {
+    "chunk": 7,
+    "start": 151,
+    "end": 175,
+    "sentences": 25
+  },
+  {
+    "chunk": 8,
+    "start": 176,
+    "end": 200,
+    "sentences": 25
+  },
+  {
+    "chunk": 9,
+    "start": 201,
+    "end": 225,
+    "sentences": 25
+  },
+  {
+    "chunk": 10,
+    "start": 226,
+    "end": 250,
+    "sentences": 25
+  },
+  {
+    "chunk": 11,
+    "start": 251,
+    "end": 275,
+    "sentences": 25
+  },
+  {
+    "chunk": 12,
+    "start": 276,
+    "end": 298,
+    "sentences": 23
+  }
+]

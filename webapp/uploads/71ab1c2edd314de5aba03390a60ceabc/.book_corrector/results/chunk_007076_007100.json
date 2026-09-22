@@ -1,0 +1,14 @@
+{
+  "chunk": 284,
+  "start": 7076,
+  "end": 7100,
+  "elapsed_seconds": 3.865,
+  "corrections": [
+    {
+      "id": 7096,
+      "original": "Я сделал шаг вбок, он сделал тоже.",
+      "corrected": "Я сделал шаг вбок, он сделал то же."
+    }
+  ],
+  "suspicious": []
+}

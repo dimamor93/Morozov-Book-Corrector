@@ -1,0 +1,14 @@
+{
+  "status": "completed",
+  "chunks_total": 416,
+  "chunks_done": 416,
+  "started_at": 1790090550.04053,
+  "last_chunk_start": 10376,
+  "last_chunk_end": 10393,
+  "avg_seconds": 6.423,
+  "eta_seconds": 0.0,
+  "total_seconds": 2672.116,
+  "corrections": 488,
+  "suspicious": 1,
+  "report": "C:\\Users\\dimam\\Desktop\\book_corrector\\webapp\\uploads\\71ab1c2edd314de5aba03390a60ceabc\\orthography_report.docx"
+}
